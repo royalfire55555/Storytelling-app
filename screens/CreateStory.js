@@ -41,6 +41,41 @@ export default class CreateStory extends Component {
         this._loadFontsAsync();
     }
 
+    async addStory() {
+        if (
+            this.state.title &&
+            this.state.description &&
+            this.state.story &&
+            this.state.moral
+        ) {
+            let storyData = {
+                preview_image: this.state.previewImage,
+                title: this.state.title,
+                description: this.state.description,
+                story: this.state.story,
+                moral: this.state.moral,
+                author: firebase.auth().currentUser.displayName,
+                created_on: new Date(),
+                author_uid: firebase.auth().currentUser.uid,
+                likes: 0,
+            };
+            await firebase
+                .database()
+                .ref("/posts/" + Math.random().toString(36).slice(2))
+                .set(storyData)
+                .then(function (snapshot) {});
+            this.props.setUpdateToTrue();
+            this.props.navigation.navigate("Feed");
+        } else {
+            Alert.alert(
+                "Error",
+                "All fields are required!",
+                [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+                { cancelable: false }
+            );
+        }
+    }
+
     render() {
         if (!this.state.fontsLoaded) {
             return <AppLoading />;
@@ -172,7 +207,13 @@ export default class CreateStory extends Component {
                                 numberOfLines={4}
                                 placeholderTextColor="white"
                             />
-                            
+                            <View style={styles.submitButton}>
+                                <Button
+                                    onPress={() => this.addStory()}
+                                    title="Submit"
+                                    color="#841584"
+                                />
+                            </View>
                         </ScrollView>
                     </View>
                     <View style={{ flex: 0.08 }} />
