@@ -1,3 +1,6 @@
+// import firebase from "firebase";
+// firebase.initializeApp;
+
 export const firebaseConfig = {
     apiKey: "AIzaSyAlhxmFuVDRGJjvkFPSS5Q3PCyMiEFxJPw",
     authDomain: "storytellin-72416.firebaseapp.com",
